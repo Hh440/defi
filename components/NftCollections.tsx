@@ -1,16 +1,18 @@
 'use client'
 import { JsonRpcProvider } from 'ethers';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 interface NFT {
     name: string;
     description: string;
     circulatingSupply: number;
     imageUrl?: string;
-    totalSupply: number; 
+    totalSupply: number;
+    address: string; 
 }
 
-const Nft = () => {
+const NftCollections = () => {
     const [nftCollection, setNftCollections] = useState<NFT[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -33,7 +35,7 @@ const Nft = () => {
 
                 console.log("NFT Data:", nftData);
 
-                // Cast the response to NFT[] to avoid the unknown[] error
+                // Remove duplicates based on NFT name
                 const uniqueNfts = Array.from(new Map((nftData as NFT[]).map((nft) => [nft.name, nft])).values());
                 setNftCollections(uniqueNfts);
 
@@ -55,30 +57,36 @@ const Nft = () => {
         <div className="p-6 bg-gray-100">
             <h1 className="text-3xl font-bold text-center mb-8">NFT Collection</h1>
             <div className="grid grid-cols-1 gap-6">
-                {nftCollection.map((nft, index) => (
-                    <div key={nft.name} className="flex items-center justify-between bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300">
-                        <div className="flex items-center">
-                            {nft.imageUrl ? (
-                                <img src={nft.imageUrl} alt={nft.name} className="w-16 h-16 object-cover rounded-md mr-4" />
-                            ) : (
-                                <div className="w-16 h-16 bg-gray-200 rounded-md mr-4 flex items-center justify-center">
-                                    <span role="img" aria-label="placeholder" className="text-gray-400 text-3xl">🔮</span>
+                {nftCollection.map((nft) => {
+                    const id = nft.address;
+
+                    return (
+                       <Link href={`/nfts/${id}?name=${encodeURIComponent(nft.name)}`} key={nft.address}>
+                        <div className="flex items-center justify-between bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300">
+                            <div className="flex items-center">
+                                {nft.imageUrl ? (
+                                    <img src={nft.imageUrl} alt={nft.name} className="w-16 h-16 object-cover rounded-md mr-4" />
+                                ) : (
+                                    <div className="w-16 h-16 bg-gray-200 rounded-md mr-4 flex items-center justify-center">
+                                        <span role="img" aria-label="placeholder" className="text-gray-400 text-3xl">🔮</span>
+                                    </div>
+                                )}
+                                <div>
+                                    <h2 className="text-xl font-semibold">{nft.name}</h2>
+                                    <p className="text-gray-600">{nft.description}</p>
                                 </div>
-                            )}
-                            <div>
-                                <h2 className="text-xl font-semibold">{nft.name}</h2>
-                                <p className="text-gray-600">{nft.description}</p>
+                            </div>
+                            <div className="text-right flex gap-5">
+                                <p className="text-sm text-gray-500">Total Supply: {nft.totalSupply}</p>
+                                <p className='text-sm text-gray-500'>Circulating Supply: {nft.circulatingSupply}</p>
                             </div>
                         </div>
-                        <div className="text-right flex gap-5">
-                            <p className="text-sm text-gray-500">Total Supply: {nft.totalSupply}</p>
-                            <p className='text-sm text-gray-500'>Circulating Supply: {nft.circulatingSupply}</p>
-                        </div>
-                    </div>
-                ))}
+                       </Link>
+                    );
+                })}
             </div>
         </div>  
     );
 };
 
-export default Nft;
+export default NftCollections;
