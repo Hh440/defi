@@ -1,10 +1,10 @@
-import Nft from "@/components/Nft"
+import NftCollections from "@/components/NftCollections"
 
 
 const NftPage=()=>{
     return(
         <div className="" style={{ width: '75vw' }}>
-            <Nft/>
+            <NftCollections/>
 
         </div>
     )
