@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings, Wallet } from "lucide-react"
+import { Calendar, Cpu, Home, Inbox, Search, Settings, Wallet } from "lucide-react"
 
 import {
   Sidebar,
@@ -24,6 +24,10 @@ const items = [
     title:"Wallet",
     url:"/wallet",
     icon:Wallet
+  },{
+    title:"NFT",
+    url:"/nft",
+    icon:Cpu
   },
   {
     title: "Inbox",
