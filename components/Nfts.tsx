@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { JsonRpcProvider } from "ethers";
+import Link from "next/link";
 
 interface NftDisplayProps {
     id: string;
@@ -14,6 +15,7 @@ interface Nft {
     imageUrl: string;
     tokenId: string;
     traits: Array<{ trait_type: string; value: string }>;
+    collectionTokenId:string
 }
 
 
@@ -38,15 +40,23 @@ const NftDisplay = ({id,name}:NftDisplayProps) => {
             ]);
 
             console.log("Fetched data:", data);
+
+
+            console.log("TOkens: ",data.tokens)
             
             if (data.tokens && Array.isArray(data.tokens)) {
-                const formattedNfts = data.tokens.map((nft: any) => ({
-                    name: nft.name || `Token #${nft.tokenId}`,
-                    description: nft.description || "No description available",
-                    imageUrl: nft.imageUrl || "",
-                    tokenId: nft.tokenId,
-                    traits: nft.traits || [],
-                }));
+                const formattedNfts = data.tokens.map((nft: any) => {
+                    // Log each NFT to see its structure
+                    console.log("NFT Object:", nft);
+
+                    return {
+                        name: nft.name || `Token #${nft.collectionTokenId}`,
+                        description: nft.description || "No description available",
+                        imageUrl: nft.imageUrl || "",
+                        collectionTokenId: nft.collectionTokenId, // Ensure tokenId is correctly mapped
+                        traits: nft.traits || [],
+                    };
+                });
                 setNfts(formattedNfts);
                 setTotalPages(data.totalPages || 1);
             } else {
@@ -71,7 +81,15 @@ const NftDisplay = ({id,name}:NftDisplayProps) => {
         <div className="p-6 bg-gray-100">
             <h1 className="text-3xl font-bold text-center mb-8">{name} NFTs</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {nfts.map((nft) => (
+                {nfts.map((nft) => {
+                    const tokenId=nft.collectionTokenId
+
+                    console.log(tokenId)
+                    
+                    
+                    return(
+
+                    <Link href={`/nftdetail/${tokenId}?collection=${encodeURIComponent(id)}`} passHref>
                     <div key={nft.tokenId} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300">
                         <div className="flex flex-col items-center">
                             {nft.imageUrl ? (
@@ -96,7 +114,8 @@ const NftDisplay = ({id,name}:NftDisplayProps) => {
                             </div>
                         </div>
                     </div>
-                ))}
+                    </Link>
+                )})}
             </div>
             
             <div className="flex justify-center mt-6">
