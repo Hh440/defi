@@ -20,7 +20,7 @@ interface Transfer {
     from: string;
     to: string;
     date: string;
-    transactionHash: string;
+    txHash: string;
 }
 
 interface FetchTransferProps {
@@ -82,7 +82,7 @@ const NftDetail = ({ tokenId, collection }: NftDetailProps) => {
                     from: transfer.from,
                     to: transfer.to,
                     date: new Date(transfer.date).toLocaleString(),
-                    transactionHash: transfer.transactionHash,
+                    txHash: transfer.txHash,
                 }));
                 setTransfer(formattedTransfers);
                 setTotalPages(data.totalPages || 1);
@@ -137,7 +137,7 @@ const NftDetail = ({ tokenId, collection }: NftDetailProps) => {
                                         <strong className="text-gray-700">Date:</strong> {transfer.date} <br />
                                         <strong className="text-blue-500">
                                             <a
-                                                href={`https://etherscan.io/tx/${transfer.transactionHash}`}
+                                                href={`https://etherscan.io/tx/${transfer.txHash}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="underline"

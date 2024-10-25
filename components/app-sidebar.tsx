@@ -1,4 +1,4 @@
-import { Calendar, Cpu, Home, Inbox, Search, Settings, Wallet } from "lucide-react"
+import { Boxes, Calendar, Cpu, Home, Inbox, Search, Settings, Wallet } from "lucide-react"
 
 import {
   Sidebar,
@@ -10,8 +10,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { title } from "process"
-import { url } from "inspector"
 
 // Menu items.
 const items = [
@@ -24,7 +22,13 @@ const items = [
     title:"Wallet",
     url:"/wallet",
     icon:Wallet
-  },{
+  },
+  {
+    title:"PNFT",
+    url:"/pnft",
+    icon:Boxes,
+  },
+  {
     title:"NFT",
     url:"/nft",
     icon:Cpu
