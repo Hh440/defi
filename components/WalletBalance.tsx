@@ -1,101 +1,89 @@
-'use client'
+'use client';
 
-import { Card, CardContent } from "@/components/ui/card"
-import { useConnection, useWallet } from "@solana/wallet-adapter-react"
-import { LAMPORTS_PER_SOL } from "@solana/web3.js"
-import { QrCode } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useRouter } from 'next/navigation'; 
+import { Card, CardContent } from "@/components/ui/card";
+import { QrCode } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useAccount, useBalance, useDisconnect } from 'wagmi';
 
-const  WalletBalance=()=> {
-  
+const WalletBalance = () => {
+  const router = useRouter(); 
+  const { address } = useAccount();
+  const { disconnect } = useDisconnect();
+  const balance = useBalance({ address });
 
+  const [display, setDisplay] = useState('');
 
-  
-  const wallet = useWallet()
-  const {connection}= useConnection()
-
-  const [balance,setBalance]=useState(0)
-
-
-  useEffect(()=>{
-   const getBalance=async()=>{
-    if(!wallet.publicKey){
-      setBalance(0)
-      return
+  useEffect(() => {
+    if (balance.data) {
+      setDisplay(balance.data.formatted);
     }
-
-
-    const balance= await connection.getBalance(wallet.publicKey)
-
-    setBalance(balance/LAMPORTS_PER_SOL)
-
-
-   }
-
-   getBalance()
-  },[wallet.publicKey,connection])
-
+  }, [balance.data]); 
 
   const maskPublicKey = (key: string) => {
-    return `${key.slice(0, 4)} ${key.slice(4, 8)} ${key.slice(-5, -1)}`
-  }
+    return `${key.slice(0, 4)} ${key.slice(4, 8)} ${key.slice(-5, -1)}`;
+  };
 
-
-  if(!wallet.publicKey){
-    return<div>
-      Not connected
-    </div>
-  }
-
-
+  const handleDisconnect = () => {
+    disconnect(); 
+    router.push('/'); 
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md aspect-[1.6/1] relative overflow-hidden bg-gradient-to-br from-primary to-primary-foreground border-2 opacity-90">
-        <CardContent className="relative h-full flex flex-col justify-between p-6">
-          <div className="flex justify-between items-start">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-300">Solana Balance</h2>
-              <p className="text-4xl font-extrabold text-white mt-2">
-                {balance.toFixed(4)} SOL
-              </p>
-            </div>
-            <div className="bg-gray-700 rounded-full p-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 397.7 311.7"
-                className="w-10 h-10"
-              >
-                <path
-                  d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7z"
-                  fill="#00FFA3"
-                />
-                <path
-                  d="M64.6 3.8C67.1 1.4 70.4 0 73.8 0h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 3.8z"
-                  fill="#00FFA3"
-                />
-                <path
-                  d="M333.1 120.1c-2.4-2.4-5.7-3.8-9.2-3.8H6.5c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z"
-                  fill="#00FFA3"
-                />
-              </svg>
-            </div>
-          </div>
-          <div className="space-y-4">
-            <div className="flex justify-between items-end">
+      <div className="flex flex-col items-center"> 
+        <Card className="aspect-[1.6/1] relative overflow-hidden bg-gradient-to-br from-primary to-primary-foreground border-2 opacity-90" style={{ width: "25vw" }}>
+          <CardContent className="relative h-full flex flex-col justify-between p-6">
+            <div className="flex justify-between items-start">
               <div>
-                <p className="text-gray-800 text-xs">Wallet Address</p>
-                <p className="text-gray-200 text-sm font-medium">{maskPublicKey(wallet.publicKey.toString())}</p>
+                <h2 className="text-2xl font-bold text-gray-300">Ethereum Balance</h2>
+                <p className="text-4xl font-extrabold text-white mt-2">
+                  {display} 
+                </p>
               </div>
-              <div className="bg-gray-700 p-2 rounded">
-                <QrCode className="w-8 h-8 text-gray-300" />
+              <div className="bg-gray-700 rounded-full p-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 64 128"
+                  className="w-10 h-10"
+                >
+                  <path
+                    d="M32 0L0 64l32 16L64 64 32 0z"
+                    fill="#3C3C3D"
+                  />
+                  <path
+                    d="M32 128l32-64-32-16-32 16 32 64z"
+                    fill="#8C8C8C"
+                  />
+                </svg>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
+            <div className="space-y-4">
+              <div className="flex justify-between items-end">
+                <div>
+                  <p className="text-gray-800 text-xs">Wallet Address</p>
+                  <p className="text-gray-200 text-sm font-medium">
+                    {address ? maskPublicKey(address) : 'Not connected'} 
+                  </p>
+                </div>
+                <div className="bg-gray-700 p-2 rounded">
+                  <QrCode className="w-8 h-8 text-gray-300" />
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-export default WalletBalance
+        
+        <button 
+          onClick={handleDisconnect} 
+          className="mt-6 bg-red-600 hover:bg-red-500 text-white font-medium py-2 px-6 rounded-lg shadow-lg transition duration-300 transform hover:scale-105" // Added shadow and transform for a nice effect
+        >
+          Disconnect
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default WalletBalance;

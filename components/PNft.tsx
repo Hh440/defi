@@ -65,13 +65,6 @@ const PNfts=()=>{
         fetchNft()
     },[pageNumber])
 
-    
-
-
-
-
-
-
     return(
         <div className="flex flex-col items-center py-10 bg-gradient-to-b from-purple-600 to-indigo-900 min-h-screen text-white">
       <h1 className="text-4xl font-extrabold mb-8 text-center">Explore Your NFT Collection</h1>
