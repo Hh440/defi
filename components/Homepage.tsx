@@ -1,35 +1,39 @@
-'use client'
+'use client';
 
 import '@solana/wallet-adapter-react-ui/styles.css';
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
-import { WalletDisconnectButton, WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { Wallet } from 'lucide-react'; // Imported but unused
+import { WagmiProvider,useAccount } from 'wagmi';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import config from '@/config';
 
-import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'; // Example of importing wallets
+
+import dynamic from 'next/dynamic';
+
+const queryClient = new QueryClient();
+
+const Account = dynamic(() => import('./Account'), { ssr: false }); 
+const WalletOptions= dynamic(()=>import('./WalletOptions') ,{ssr:false})
+
+
+const ConnectWallet = () => {
+    const { isConnected } = useAccount();
+    return isConnected ? <Account /> : <WalletOptions />;
+  };
+  
 
 
 const Homepage = () => {
-    const wallets = [new PhantomWalletAdapter()]; // Add wallet adapters here
-
     return (
-        <div>
-            <div className='item-end'>
-                <ConnectionProvider endpoint={'https://solana-mainnet.g.alchemy.com/v2/bN7nlZQIEly-Vv752sdL8zXX4-9Ygd-W'}>
-                    <WalletProvider wallets={wallets} autoConnect>
-                        <WalletModalProvider>
-                            <div className="flex justify-end items-end space-x-4 px-6 py-3 ">
-                                <WalletMultiButton className="wallet-button bg-indigo-600 hover:bg-indigo-700 transition-all duration-300" />
-                                <WalletDisconnectButton className="wallet-button bg-red-600 hover:bg-red-700 transition-all duration-300" />
-                            </div>
-                        </WalletModalProvider>
-                    </WalletProvider>
-                </ConnectionProvider>
-            </div>
-
-        
-            
+        <div className="flex justify-end h-screen bg-black text-white p-4" style={{width:"75vw"}}>
+            <WagmiProvider config={config}>
+                <QueryClientProvider client={queryClient}>
+                   <ConnectWallet/>
+                </QueryClientProvider>
+            </WagmiProvider>
         </div>
     );
 };
+
+
+
 
 export default Homepage;

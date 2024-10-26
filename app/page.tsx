@@ -5,7 +5,7 @@ import Homepage from '@/components/Homepage';
 
 export default function Home() {
   return (
-    <main className="w-screen h-screen flex flex-row relative"> {/* Updated to w-screen */}
+    <main className="flex flex-row relative" style={{width:"75vw"}}>
 
       <Homepage/>
      
