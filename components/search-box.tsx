@@ -7,9 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-interface SearchBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {}
-
-export default function SearchBox({ className, ...props }: SearchBoxProps) {
+export default function SearchBox({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
   const [value, setValue] = React.useState('')
   const inputRef = React.useRef<HTMLInputElement>(null)
 
