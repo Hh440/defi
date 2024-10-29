@@ -4,6 +4,7 @@ import React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { CopyIcon } from 'lucide-react'
+import Link from 'next/link'
 
 type Transaction = {
   signature: string
@@ -42,6 +43,13 @@ const colorMap: { [key: string]: string } = {
 }
 
 export function TransactionTableComponent() {
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(
+      () => console.log('Copied to clipboard'),
+      (err) => console.error('Could not copy text', err)
+    )
+  }
+
   return (
     <div className="w-full bg-gray-900 p-4 rounded-lg overflow-x-auto">
       <Table>
@@ -55,31 +63,45 @@ export function TransactionTableComponent() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions.map((tx, index) => (
-            <TableRow key={index} className="border-b border-gray-800">
-              <TableCell className="font-mono">
-                <div className="flex items-center gap-2">
-                  <CopyIcon className="h-4 w-4 text-gray-500" />
-                  <span className={colorMap[tx.signature[0]] || 'text-gray-300'}>
-                    {tx.signature}
-                  </span>
-                </div>
-              </TableCell>
-              <TableCell className="font-mono">
-                <div className="flex items-center gap-2">
-                  <CopyIcon className="h-4 w-4 text-gray-500" />
-                  <span className="text-gray-300">{tx.block.toLocaleString()}</span>
-                </div>
-              </TableCell>
-              <TableCell className="text-gray-400">{tx.age}</TableCell>
-              <TableCell className="text-gray-400">{tx.timestamp}</TableCell>
-              <TableCell>
-                <Badge variant="outline" className="bg-green-900 text-green-400 border-green-400">
-                  {tx.result}
-                </Badge>
-              </TableCell>
-            </TableRow>
-          ))}
+          {transactions.map((tx) => {
+            const colorClass = colorMap[tx.signature[0]] || 'text-gray-300';
+            return (
+              <TableRow key={tx.signature} className="border-b border-gray-800">
+                <TableCell className="font-mono">
+                  <div className="flex items-center gap-2">
+                    <CopyIcon
+                      className="h-4 w-4 text-gray-500 cursor-pointer"
+                      onClick={() => copyToClipboard(tx.signature)}
+                    />
+                    <Link href={`/dashboard/transaction/${tx.signature}`}>
+                      <span className={colorClass}>
+                        {tx.signature}
+                      </span>
+                    </Link>
+                  </div>
+                </TableCell>
+                <TableCell className="font-mono">
+                  <div className="flex items-center gap-2">
+                    <CopyIcon
+                      className="h-4 w-4 text-gray-500 cursor-pointer"
+                      onClick={() => copyToClipboard(tx.block.toString())}
+                    />
+                    <span className="text-gray-300">{tx.block.toLocaleString()}</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-gray-400">{tx.age}</TableCell>
+                <TableCell className="text-gray-400">{tx.timestamp}</TableCell>
+                <TableCell>
+                  <Badge
+                    variant="outline"
+                    className={`border-2 ${tx.result === 'Success' ? 'bg-green-900 text-green-400 border-green-400' : 'bg-red-900 text-red-400 border-red-400'}`}
+                  >
+                    {tx.result}
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            )
+          })}
         </TableBody>
       </Table>
     </div>
