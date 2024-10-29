@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Box, FileText, Settings } from 'lucide-react';
-import axios from 'axios';
+import axios from 'axios'
 
 type Block = {
   id: number;
