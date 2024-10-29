@@ -13,29 +13,29 @@ interface TransactionDetailProps {
 
 interface Transaction {
   signature: string;
-  result: string;
+  result: number;
   timestamp: string;
-  confirmationStatus: string;
+  confirmationStatus: number;
   confirmations: string;
   nonce: string;
   recentBlockhash: string;
   fee: number;
-  computeUnitsConsumed: string; // Use string (primitive type) instead of String
+  computeUnitsConsumed: string; 
   gasPrice: string;
 }
 
 export default function TransactionDetails({ txId }: TransactionDetailProps) {
   const [txDetails, setTxDetails] = useState<Transaction | null>(null);
   const [tooltipVisible, setTooltipVisible] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false); // Add loading state
+  const [loading, setLoading] = useState<boolean>(false); 
 
   const fetchTransactionDetails = async () => {
     const provider = new JsonRpcProvider("https://solemn-black-surf.quiknode.pro/f40b179076ea606dfb739b393689fcd03d654861/");
-    setLoading(true); // Set loading state to true
+    setLoading(true); 
     try {
       const network = await provider.send('bb_getTx', [txId]);
 
-      // Map the network response to match Transaction interface
+      
       const details: Transaction = {
         signature: network.txid,
         result: network.ethereumSpecific.status,
@@ -52,21 +52,30 @@ export default function TransactionDetails({ txId }: TransactionDetailProps) {
       setTxDetails(details);
     } catch (error) {
       console.error("Error fetching transaction details:", error);
-      alert("Failed to fetch transaction details. Please try again."); // Notify the user
+      alert("Failed to fetch transaction details. Please try again."); 
     } finally {
-      setLoading(false); // Ensure loading state is false after fetching
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchTransactionDetails();
+    
   }, [txId]);
+
+
+
+  useEffect(()=>{
+    if(txDetails){
+      console.log(txDetails)
+    }
+  })
 
   const handleCopy = () => {
     if (txDetails?.signature) {
       navigator.clipboard.writeText(txDetails.signature)
         .then(() => {
-          alert('Signature copied to clipboard!'); // Optional: Notify the user
+          alert('Signature copied to clipboard!'); 
         })
         .catch(err => {
           console.error('Failed to copy: ', err);
@@ -99,9 +108,9 @@ export default function TransactionDetails({ txId }: TransactionDetailProps) {
           </div>
         </CardHeader>
         <CardContent className="grid gap-4">
-          {loading ? ( // Show loading state
+          {loading ? ( 
             <div className="flex justify-center items-center h-32">
-              <span className="loader" /> {/* Your loading spinner here */}
+              <span className="loader" /> 
             </div>
           ) : (
             <>
@@ -115,7 +124,7 @@ export default function TransactionDetails({ txId }: TransactionDetailProps) {
               <div className="grid grid-cols-[1fr,auto] items-center gap-2">
                 <span className="text-gray-400">Result</span>
                 <Badge variant="outline" className="bg-green-900 text-green-400 border-green-400">
-                  {txDetails?.result === "1" ? "Success" : "Failure"}
+                  {txDetails?.result ===1 ? "Success" : "Failure"}
                 </Badge>
               </div>
               <div className="grid grid-cols-[1fr,auto] items-center gap-2">
@@ -124,7 +133,7 @@ export default function TransactionDetails({ txId }: TransactionDetailProps) {
               </div>
               <div className="grid grid-cols-[1fr,auto] items-center gap-2">
                 <span className="text-gray-400">Confirmation Status</span>
-                <span>{txDetails?.confirmationStatus === "1" ? "FINALIZED" : "PENDING"}</span>
+                <span>{txDetails?.confirmationStatus === 1 ? "FINALIZED" : "PENDING"}</span>
               </div>
               <div className="grid grid-cols-[1fr,auto] items-center gap-2">
                 <span className="text-gray-400">Confirmations</span>
@@ -153,7 +162,7 @@ export default function TransactionDetails({ txId }: TransactionDetailProps) {
                     onMouseLeave={() => setTooltipVisible(false)}
                   />
                   {tooltipVisible && (
-                    <div className="absolute z-10 bg-gray-800 text-gray-200 p-2 rounded-md mb-8">
+                    <div className="absolute z-10 bg-gray-800 text-gray-200 p-2 text-sm rounded-md mb-8">
                       The blockhash is a unique identifier for the block that contains the transaction.
                     </div>
                   )}
