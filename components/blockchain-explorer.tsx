@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Box, FileText, Settings } from 'lucide-react';
 import axios from 'axios'
+import Link from 'next/link';
 
 type Block = {
   id: number;
@@ -139,12 +140,16 @@ export default function BlockchainExplorer() {
             </Button>
           </CardHeader>
           <CardContent className="flex-1 overflow-y-auto"> {/* Added overflow for scrolling */}
-            {transactions.map((tx) => (
+            {transactions.map((tx) => {
+              const id=tx.hash
+              return(
               <div key={tx.hash} className="flex items-center space-x-4 py-2">
                 <FileText className="h-6 w-6 text-primary" />
                 <div className="flex-1">
                   <div className="flex items-center">
-                    <span className="text-primary font-medium truncate">{tx.hash}</span> {/* Added truncate */}
+                    <Link href={`/dashboard/transaction/${id}`}>
+                    <span className="text-primary font-medium truncate">{tx.hash}</span>
+                     </Link>
                     <span className="text-muted-foreground text-sm ml-2">{tx.age}</span>
                   </div>
                   <div className="text-sm">
@@ -158,7 +163,7 @@ export default function BlockchainExplorer() {
                   </div>
                 </div>
               </div>
-            ))}
+            )})}
             <Button variant="link" className="w-full mt-2">
               VIEW ALL TRANSACTIONS →
             </Button>
