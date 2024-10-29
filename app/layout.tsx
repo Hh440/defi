@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import SearchBox from "@/components/search-box";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,6 +35,11 @@ export default function RootLayout({
           <AppSidebar />
           <main>
             <SidebarTrigger />
+            <div className="flex justify-center px-4">
+              <div className="w-full max-w-lg">
+                <SearchBox /> 
+              </div>
+            </div>
             {children}
           </main>
         </SidebarProvider>
