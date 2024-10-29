@@ -23,16 +23,16 @@ interface Transfer {
     txHash: string;
 }
 
-interface FetchTransferProps {
-    id: string,
-    page: number
-}
+// interface FetchTransferProps {
+//     id: string,
+//     page: number
+// }
 
 const NftDetail = ({ tokenId, collection }: NftDetailProps) => {
     const [nft, setNft] = useState<Nft | null>(null);
     const [transfers, setTransfer] = useState<Transfer[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
+    const currentPage = 1
+    // const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
         fetchNftDetails(tokenId);
@@ -85,7 +85,7 @@ const NftDetail = ({ tokenId, collection }: NftDetailProps) => {
                     txHash: transfer.txHash,
                 }));
                 setTransfer(formattedTransfers);
-                setTotalPages(data.totalPages || 1);
+                // setTotalPages(data.totalPages || 1);
             }
         } catch (error) {
             console.error("Error fetching transfer history:", error);

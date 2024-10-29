@@ -1,8 +1,6 @@
 'use client'
 
-import { CodeSandboxLogoIcon } from "@radix-ui/react-icons"
 import { JsonRpcProvider } from "ethers"
-import { Wallet } from "lucide-react"
 import { useState,useEffect } from "react"
 
 interface NFTTraits{
