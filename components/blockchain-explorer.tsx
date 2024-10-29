@@ -105,12 +105,16 @@ export default function BlockchainExplorer() {
             </Button>
           </CardHeader>
           <CardContent className="flex-1 overflow-y-auto"> {/* Added overflow for scrolling */}
-            {blocks.map((block) => (
-              <div key={block.number} className="flex items-center space-x-4 py-2">
+            {blocks.map((block) => {
+              const id=block.hash
+              return(
+              <div key={block.hash} className="flex items-center space-x-4 py-2">
                 <Box className="h-6 w-6 text-primary" />
                 <div className="flex-1">
                   <div className="flex items-center">
-                    <span className="text-primary font-medium">{block.number}</span>
+                    <Link href={`/dashboard/block/${id}`}>
+                    <span className="text-primary font-medium">{block.hash}</span>
+                    </Link>
                     <span className="text-muted-foreground text-sm ml-2">{block.age}</span>
                   </div>
                   <div className="text-sm">
@@ -124,7 +128,7 @@ export default function BlockchainExplorer() {
                   <div className="font-medium">{(parseInt(block.gasUsed, 16) / 1e9).toFixed(5)} Eth</div>
                 </div>
               </div>
-            ))}
+            )})}
             <Button variant="link" className="w-full mt-2">
               VIEW ALL BLOCKS →
             </Button>

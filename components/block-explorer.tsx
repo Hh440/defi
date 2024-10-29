@@ -1,12 +1,93 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowLeft, ArrowRight, ChevronDown, Copy, ExternalLink, Info, Search, Settings } from 'lucide-react'
+import {  ExternalLink, Info, Search, Settings } from 'lucide-react'
+import { JsonRpcProvider } from 'ethers'
 
-export default function BlockExplorer() {
+interface BlockExplorerProps{
+  blockHash:string
+}
+interface Block {
+  hash: string
+  previousBlockHash: string
+  nextBlockHash?: string
+  height?: string
+  confirmations?: string
+  size?: string
+  time?: string
+  version?: string
+  merkleRoot?: string
+  nonce?: string
+  bits?: string
+  difficulty?: string
+  transactionsCount?: number
+  
+}
+
+
+export default function BlockExplorer({blockHash}:BlockExplorerProps) {
+
+  const[blockDetails,setBlockDetails]=useState<Block|null>(null)
+
+
+  useEffect(()=>{
+    const fetchBlockDetails=async()=>{
+      try {
+        const provider = new JsonRpcProvider("https://solemn-black-surf.quiknode.pro/f40b179076ea606dfb739b393689fcd03d654861/")
+        const network = await provider.send("bb_getBlock", [blockHash])
+        
+        const Block:Block={
+          hash:blockHash,
+          previousBlockHash:network.previousBlockHash,
+          nextBlockHash:network.nextBlockHash,
+          height:network.height,
+          confirmations:network.confirmations,
+          size:network.size,
+          time:calculateAge(network.time),
+          version:network.version,
+          merkleRoot:network.merkleRoot,
+          nonce:network.nonce,
+          bits:network.bits,
+          difficulty:network.difficulty,
+          transactionsCount: network.txCount,
+          
+
+
+        }
+        console.log(network)
+        setBlockDetails(Block)
+      } catch (error) {
+        console.error("Failed to fetch block details:", error)
+      }
+    }
+
+    fetchBlockDetails()
+  },[blockHash])
+
+  
+
+  
+  
+
+  const calculateAge = (timestamp: string): string => {
+    const blockTime = parseInt(timestamp) * 1000
+    const diff = Date.now() - blockTime
+    const seconds = Math.floor(diff / 1000)
+    if (seconds < 60) return `${seconds} secs ago`
+    const minutes = Math.floor(seconds / 60)
+    return `${minutes} mins ago`
+  }
+
+
+
+
+
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
@@ -35,7 +116,7 @@ export default function BlockExplorer() {
       {/* Main Content */}
       <main className="container mx-auto p-4">
         <div className="mb-4">
-          <h1 className="text-2xl font-bold mb-2">Block #21057282</h1>
+          <h1 className="text-2xl font-bold mb-2">Block #{blockDetails?.height}</h1>
           <div className="flex space-x-2">
             <Badge variant="secondary" className="bg-primary/10 text-primary">
               <Info className="h-4 w-4 mr-1" />
@@ -61,9 +142,8 @@ export default function BlockExplorer() {
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Block Height:</span>
                     <div className="flex items-center">
-                      <span>21057282</span>
-                      <Button variant="ghost" size="icon" className="h-6 w-6"><ArrowLeft className="h-4 w-4" /></Button>
-                      <Button variant="ghost" size="icon" className="h-6 w-6"><ArrowRight className="h-4 w-4" /></Button>
+                      <span>{blockDetails?.height}</span>
+                     
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
@@ -72,7 +152,7 @@ export default function BlockExplorer() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Timestamp:</span>
-                    <span>14 mins ago (Oct-27-2024 01:32:23 PM +UTC)</span>
+                    <span>{blockDetails?.time}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Proposed On:</span>
@@ -80,57 +160,52 @@ export default function BlockExplorer() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Transactions:</span>
-                    <span><span className="text-primary">173 transactions</span> and <span className="text-primary">87 contract internal transactions</span> in this block</span>
+                    <span><span className="text-primary">{blockDetails?.transactionsCount} transactions</span> in this block</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Withdrawals:</span>
-                    <span><span className="text-primary">16 withdrawals</span> in this block</span>
+                    <span className="text-muted-foreground">Previous BlockHash:</span>
+                    <span className='text-primary'>{blockDetails?.previousBlockHash && (
+                    <>
+                      {blockDetails.previousBlockHash.slice(0, 6)}...{blockDetails?.previousBlockHash.slice(-4)}
+                    </>
+                  )}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Fee Recipient:</span>
-                    <div className="flex items-center">
-                      <span className="text-primary">beaverbuild</span>
-                      <Copy className="h-4 w-4 ml-2 text-muted-foreground cursor-pointer hover:text-foreground" />
-                      <span className="ml-2 text-muted-foreground">in 12 secs</span>
-                    </div>
+                    <span className="text-muted-foreground">NextBlockHash:</span>
+                    <span className='text-primary'>{blockDetails?.nextBlockHash && (
+                    <>
+                      {blockDetails.nextBlockHash.slice(0, 6)}...{blockDetails?.nextBlockHash.slice(-4)}
+                    </>
+                  )}</span>
+                   
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Block Reward:</span>
                     <span>0.02757567113998184 ETH (+ 0.23673490050295105 - 0.20915922936296925)</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Total Difficulty:</span>
-                    <span>58,750,003,716,598,352,816,469</span>
+                    <span className="text-muted-foreground">Difficulty:</span>
+                    <span>{blockDetails?.difficulty}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Size:</span>
-                    <span>96,024 bytes</span>
+                    <span>{blockDetails?.size} bytes</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Gas Used:</span>
-                    <div className="flex items-center space-x-2">
-                      <span>23,176,102 (77.25%)</span>
-                      <div className="w-24 h-2 bg-muted rounded-full overflow-hidden">
-                        <div className="h-full bg-green-500" style={{width: '77.25%'}}></div>
-                      </div>
-                      <span className="text-green-600 dark:text-green-400">+55% Gas Target</span>
-                    </div>
+                    <span className="text-muted-foreground">Confirmations:</span>
+                    <span>{blockDetails?.confirmations}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Gas Limit:</span>
-                    <span>30,000,000</span>
+                    <span className="text-muted-foreground">Nonce:</span>
+                    <span>{blockDetails?.nonce}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Base Fee Per Gas:</span>
-                    <span>0.000000009024780326 ETH (9.024780326 Gwei)</span>
+                    <span className="text-muted-foreground">merkleRoot:</span>
+                    <span>{blockDetails?.merkleRoot}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Burnt Fees:</span>
-                    <span>🔥 0.20915922936296925 ETH</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Extra Data:</span>
-                    <span>beaverbuild.org (Hex:0x62656176657262756...)</span>
+                    <span className="text-muted-foreground">version</span>
+                    <span>{blockDetails?.version}</span>
                   </div>
                 </div>
               </CardContent>
@@ -144,12 +219,7 @@ export default function BlockExplorer() {
           </TabsContent>
         </Tabs>
 
-        <div className="mt-4 text-primary">
-          <a href="#" className="flex items-center hover:underline">
-            <span>Click to see more</span>
-            <ChevronDown className="h-4 w-4 ml-1" />
-          </a>
-        </div>
+       
       </main>
     </div>
   )
