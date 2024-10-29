@@ -45,7 +45,7 @@ const NftDisplay = ({id,name}:NftDisplayProps) => {
             console.log("TOkens: ",data.tokens)
             
             if (data.tokens && Array.isArray(data.tokens)) {
-                const formattedNfts = data.tokens.map((nft: any) => {
+                const formattedNfts = data.tokens.map((nft: Nft) => {
                     // Log each NFT to see its structure
                     console.log("NFT Object:", nft);
 
