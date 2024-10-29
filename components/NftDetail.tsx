@@ -78,7 +78,7 @@ const NftDetail = ({ tokenId, collection }: NftDetailProps) => {
             ]);
 
             if (data.transfers && Array.isArray(data.transfers)) {
-                const formattedTransfers = data.transfers.map((transfer: any) => ({
+                const formattedTransfers = data.transfers.map((transfer: { from: string; to: string; date: string; txHash: string }) => ({
                     from: transfer.from,
                     to: transfer.to,
                     date: new Date(transfer.date).toLocaleString(),

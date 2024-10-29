@@ -55,7 +55,7 @@ export default function BlockchainExplorer() {
     const fetchBlocks = async () => {
       try {
         const response = await axios.get('http://localhost:3000/blocks');
-        const fetchedBlocks: Block[] = response.data.map((block: any) => ({
+        const fetchedBlocks: Block[] = response.data.map((block: Block) => ({
           ...block,
           age: calculateAge(block.timestamp), // Convert timestamp to a human-readable format
         }));
@@ -69,7 +69,7 @@ export default function BlockchainExplorer() {
     const fetchTransactions = async () => { // New function to fetch transactions
       try {
         const response = await axios.get('http://localhost:3000/transactions');
-        const fetchedTransactions: Transaction[] = response.data.map((tx: any) => ({
+        const fetchedTransactions: Transaction[] = response.data.map((tx: Transaction) => ({
           ...tx,
           age: calculateAge(tx.block_number), // You may adjust how age is calculated for transactions
         }));

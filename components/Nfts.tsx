@@ -89,7 +89,7 @@ const NftDisplay = ({id,name}:NftDisplayProps) => {
                     
                     return(
 
-                    <Link href={`/nftdetail/${tokenId}?collection=${encodeURIComponent(id)}`} passHref>
+                    <Link href={`/nftdetail/${tokenId}?collection=${encodeURIComponent(id)}`} passHref key={tokenId} >
                     <div key={nft.tokenId} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300">
                         <div className="flex flex-col items-center">
                             {nft.imageUrl ? (

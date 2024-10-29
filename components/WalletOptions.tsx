@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useConnect } from 'wagmi';
+import { Connector, useConnect } from 'wagmi';
 
 const WalletOptions = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -16,7 +16,7 @@ const WalletOptions = () => {
   if (!isMounted) return null; 
   if (!connectors.length) return <div>No connectors available</div>;
 
-  const handleConnect = (connector: any) => {
+  const handleConnect = (connector: Connector) => {
     console.log(`Attempting to connect with ${connector.name} (id: ${connector.id})`);
 
     try {
