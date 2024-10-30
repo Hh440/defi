@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Box, FileText, Settings } from 'lucide-react';
 import axios from 'axios'
 import Link from 'next/link';
+import { BACKEND_URL } from '@/project';
 
 
 type Block = {
@@ -55,7 +56,7 @@ export default function BlockchainExplorer() {
   useEffect(() => {
     const fetchBlocks = async () => {
       try {
-        const response = await axios.get("https://webhook-defi.onrender.com/blocks");
+        const response = await axios.get(`${BACKEND_URL}/blocks`);
         const fetchedBlocks: Block[] = response.data.map((block: Block) => ({
           ...block,
           age: calculateAge(block.timestamp), // Convert timestamp to a human-readable format
@@ -69,7 +70,7 @@ export default function BlockchainExplorer() {
 
     const fetchTransactions = async () => { // New function to fetch transactions
       try {
-        const response = await axios.get('https://webhook-defi.onrender.com/transactions');
+        const response = await axios.get(`${BACKEND_URL}/transactions`);
         const fetchedTransactions: Transaction[] = response.data.map((tx: Transaction) => ({
           ...tx,
           age: calculateAge(tx.block_number), // You may adjust how age is calculated for transactions
