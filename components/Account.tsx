@@ -1,6 +1,6 @@
 'use client';
 
-import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi';
+import { useAccount, useDisconnect, useEnsName } from 'wagmi';
 import { useState } from 'react';
 import { Wallet, Send, LogOut, Copy, Check, DollarSign, User } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -14,12 +14,11 @@ const Account = () => {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
   const { data: ensName } = useEnsName({ address });
-  const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
   const [receiverKey, setReceiverKey] = useState('');
   const [transactionAmount, setTransactionAmount] = useState('');
   const [copied, setCopied] = useState(false);
   
-  const{data:hash,sendTransaction}=useSendTransaction()
+  const{ sendTransaction }=useSendTransaction()
 
 
   const handleSendTransaction = () => {
@@ -77,7 +76,7 @@ const Account = () => {
           {/* Receiver's Public Key Input */}
           <Card className="bg-primary/5 border-2 border-primary/20">
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium text-primary">Receiver's Public Key</CardTitle>
+              <CardTitle className="text-lg font-medium text-primary">Receiver&apos;s Public Key</CardTitle>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="flex items-center bg-background/80 rounded-md">
