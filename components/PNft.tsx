@@ -1,5 +1,6 @@
 'use client'
 
+import { NFTS_API } from "@/project"
 import { JsonRpcProvider } from "ethers"
 import { useState,useEffect } from "react"
 
@@ -36,7 +37,7 @@ const PNfts=()=>{
 
             try{
     
-                const provider= new JsonRpcProvider("https://magical-ancient-thunder.quiknode.pro/1dfd76532b6aae1a1d30282878363ef524d5bf69/")
+                const provider= new JsonRpcProvider(NFTS_API)
     
                 const response:FetchNFTsResponse = await provider.send("qn_fetchNFTs",[
                     {

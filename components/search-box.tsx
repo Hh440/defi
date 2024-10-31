@@ -6,14 +6,14 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { JsonRpcProvider } from 'ethers';
-import { TRANSCATION_DETAILS } from '@/project';
+import { TRANSCATION_BLOCKS } from '@/project';
 import { useRouter } from 'next/navigation';
 
 export default function SearchBox({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
   const [value, setValue] = React.useState('');
   const inputRef = React.useRef<HTMLInputElement>(null);
   const router= useRouter()
-  const provider= new JsonRpcProvider(TRANSCATION_DETAILS)
+  const provider= new JsonRpcProvider(TRANSCATION_BLOCKS)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);

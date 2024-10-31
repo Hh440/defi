@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {  ExternalLink, Info, Search, Settings } from 'lucide-react'
 import { JsonRpcProvider } from 'ethers'
+import { TRANSCATION_BLOCKS } from '@/project'
 
 interface BlockExplorerProps{
   blockHash:string
@@ -38,7 +39,7 @@ export default function BlockExplorer({blockHash}:BlockExplorerProps) {
   useEffect(()=>{
     const fetchBlockDetails=async()=>{
       try {
-        const provider = new JsonRpcProvider("https://solemn-black-surf.quiknode.pro/f40b179076ea606dfb739b393689fcd03d654861/")
+        const provider = new JsonRpcProvider(TRANSCATION_BLOCKS)
         const network = await provider.send("bb_getBlock", [blockHash])
         
         const Block:Block={

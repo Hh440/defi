@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { JsonRpcProvider } from "ethers";
 import Link from "next/link";
+import { NFTS_API } from "@/project";
 
 interface NftDisplayProps {
     id: string;
@@ -30,7 +31,7 @@ const NftDisplay = ({id,name}:NftDisplayProps) => {
 
     const fetchNfts = async (page: number) => {
         try {
-            const provider = new JsonRpcProvider("https://magical-ancient-thunder.quiknode.pro/1dfd76532b6aae1a1d30282878363ef524d5bf69/");
+            const provider = new JsonRpcProvider(NFTS_API);
             const data = await provider.send("qn_fetchNFTsByCollection", [
                 {
                     collection: id,
