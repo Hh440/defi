@@ -3,7 +3,7 @@
 import { NFTS_API } from "@/project"
 import { JsonRpcProvider } from "ethers"
 import { useState,useEffect } from "react"
-import { useAccount } from "wagmi"
+
 
 interface NFTTraits{
     trait_type:string,
