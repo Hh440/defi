@@ -2,9 +2,14 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Wallet, Zap } from 'lucide-react'
 import { Card, CardContent } from "@/components/ui/card"
+import { useRouter } from 'next/navigation'
 
 export default function WalletConnected() {
   const [isHovered, setIsHovered] = useState(false)
+  const route= useRouter()
+  const handleWallet=()=>{
+    route.push('/')
+  }
 
   return (
     <div className="flex items-center justify-center  bg-white p-4" style={{width:"75vw"}}>
@@ -67,6 +72,13 @@ export default function WalletConnected() {
               <p className="text-gray-600 mb-6">
                 Enjoy world of digital possibilities.
               </p>
+              <motion.button
+                onClick={handleWallet}
+                className="px-6 py-3 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors duration-300 shadow-md"
+                whileHover={{ scale: 1.05 }}
+              >
+                View Wallet
+              </motion.button>
               
             </motion.div>
           </motion.div>

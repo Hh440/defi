@@ -3,6 +3,7 @@
 import { NFTS_API } from "@/project"
 import { JsonRpcProvider } from "ethers"
 import { useState,useEffect } from "react"
+import { useAccount } from "wagmi"
 
 interface NFTTraits{
     trait_type:string,
@@ -25,15 +26,20 @@ interface FetchNFTsResponse {
     totalPages: number;
   }
 
-const PNfts=()=>{
+  interface PNftsProps{
+    address:string
+  }
+const PNfts=({address}:PNftsProps)=>{
 
     const [nfts, setNfts] = useState<NFT[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+ 
 
     useEffect(()=>{
 
         const fetchNft=async()=>{
+          
 
             try{
     
@@ -41,7 +47,7 @@ const PNfts=()=>{
     
                 const response:FetchNFTsResponse = await provider.send("qn_fetchNFTs",[
                     {
-                        wallet:"0x40b38765696e3d5d8d9d834d8aad4bb6e418e489",
+                        wallet:address,
                         page:pageNumber,
                         perpage:10 
                     }
