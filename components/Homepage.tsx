@@ -23,7 +23,7 @@ const ConnectWallet = () => {
 
 const Homepage = () => {
     return (
-        <div className="flex justify-end mt-20 bg-black text-white p-4" style={{width:"75vw"}}>
+        <div className="flex mt-20 " style={{width:"75vw"}}>
             <WagmiProvider config={config}>
                 <QueryClientProvider client={queryClient}>
                    <ConnectWallet/>

@@ -1,55 +1,71 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { Connector, useConnect } from 'wagmi';
-import WalletNotConnected from './walletNotConnected';
+import { useState, useEffect } from 'react'
+import { Connector, useConnect } from 'wagmi'
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Wallet } from 'lucide-react'
 
-const WalletOptions = () => {
-  const [isMounted, setIsMounted] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
-  const { connectors, connect, isSuccess } = useConnect();
+function WalletNotConnected() {
+  return (
+    <div className="text-center p-6 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-lg shadow-inner">
+      <Wallet className="w-16 h-16 mx-auto mb-4 text-primary" />
+      <h2 className="text-2xl font-bold text-primary mb-2">Connect Your Wallet</h2>
+      <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+        Choose a wallet to connect and start exploring the world of decentralized finance.
+      </p>
+    </div>
+  )
+}
+
+export default function Component() {
+  const [isMounted, setIsMounted] = useState(false)
+  const [isConnected, setIsConnected] = useState(false)
+  const { connectors, connect, isSuccess } = useConnect()
 
   useEffect(() => {
-    setIsMounted(true); 
-  }, []);
+    setIsMounted(true)
+  }, [])
 
-  // Set isConnected to true if isSuccess becomes true
   useEffect(() => {
     if (isSuccess) {
-      setIsConnected(true);
+      setIsConnected(true)
     }
-  }, [isSuccess]);
+  }, [isSuccess])
 
-  if (!isMounted) return null; 
-  if (!connectors.length) return <div>No connectors available</div>;
+  if (!isMounted) return null
+  if (!connectors.length) return <div>No connectors available</div>
 
   const handleConnect = async (connector: Connector) => {
-    console.log(`Attempting to connect with ${connector.name} (id: ${connector.id})`);
+    console.log(`Attempting to connect with ${connector.name} (id: ${connector.id})`)
     try {
-      await connect({ connector });
-      console.log(`Successfully connected with ${connector.name}`);
+      await connect({ connector })
+      console.log(`Successfully connected with ${connector.name}`)
     } catch (error) {
-      console.error(`Connection failed with ${connector.name}:`, error);
-    } 
-  };
+      console.error(`Connection failed with ${connector.name}:`, error)
+    }
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center bg-black p-6" style={{ width: "75vw", height: "30vw" }}>
-      {!isConnected && <WalletNotConnected />}
-
-      <div className="flex flex-row space-x-4">
-        {connectors.map((connector) => (
-          <button
-            key={connector.id}
-            onClick={() => handleConnect(connector)}
-            className="px-6 py-3 text-white font-semibold rounded-lg bg-black hover:bg-gray-800 border border-gray-600"
-          >
-            {connector.name}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default WalletOptions;
+    <Card className="w-full max-w-md mx-auto">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl font-bold text-center">Wallet Connection</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {!isConnected && <WalletNotConnected />}
+        <div className="grid grid-cols-2 gap-3 mt-6">
+          {connectors.map((connector) => (
+            <Button
+              key={connector.id}
+              onClick={() => handleConnect(connector)}
+              variant="outline"
+              className="w-full"
+            >
+              {connector.name}
+            </Button>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
