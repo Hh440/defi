@@ -9,7 +9,7 @@ import { JsonRpcProvider } from 'ethers';
 import { TRANSCATION_BLOCKS } from '@/project';
 import { useRouter } from 'next/navigation';
 
-export default function SearchBox({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
+export default function SearchBox({ className }: React.InputHTMLAttributes<HTMLInputElement>) {
   const [value, setValue] = React.useState('');
   const inputRef = React.useRef<HTMLInputElement>(null);
   const router= useRouter()

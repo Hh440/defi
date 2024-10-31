@@ -1,4 +1,4 @@
-import { Boxes, Calendar, Cpu, Home, Inbox, Search, Settings, Wallet } from "lucide-react"
+import { Boxes, Cpu, Home, Wallet } from "lucide-react"
 
 import {
   Sidebar,
@@ -33,6 +33,7 @@ const items = [
     url:"/nft",
     icon:Cpu
   },
+
 ]
 
 export function AppSidebar() {
