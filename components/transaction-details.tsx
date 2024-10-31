@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CopyIcon, InfoIcon, RefreshCw, Search } from 'lucide-react';
 import { JsonRpcProvider } from 'ethers';
+import { TRANSCATION_DETAILS } from '@/project';
 
 interface TransactionDetailProps {
   txId: string;
@@ -30,7 +31,7 @@ export default function TransactionDetails({ txId }: TransactionDetailProps) {
   const [loading, setLoading] = useState<boolean>(false); 
 
   const fetchTransactionDetails = async () => {
-    const provider = new JsonRpcProvider("https://solemn-black-surf.quiknode.pro/f40b179076ea606dfb739b393689fcd03d654861/");
+    const provider = new JsonRpcProvider(TRANSCATION_DETAILS);
     setLoading(true); 
     try {
       const network = await provider.send('bb_getTx', [txId]);
