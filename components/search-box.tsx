@@ -57,7 +57,7 @@ export default function SearchBox({ className, ...props }: React.InputHTMLAttrib
  
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative", className)} style={{width:"75vw"}}>
       <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         ref={inputRef}
@@ -66,8 +66,7 @@ export default function SearchBox({ className, ...props }: React.InputHTMLAttrib
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         className="pl-9 pr-12 w-full rounded-full bg-muted/50 focus-visible:bg-background transition-colors"
-        placeholder="Search..."
-        {...props}
+        placeholder="Search for Transaction or Blocks"
       />
       {value && (
         <Button
