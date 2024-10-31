@@ -36,7 +36,7 @@ export default function RootLayout({
           <main>
             <SidebarTrigger />
             <div className="flex justify-center px-4">
-              <div className="w-full max-w-lg">
+              <div >
                 <SearchBox /> 
               </div>
             </div>
