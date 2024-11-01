@@ -1,8 +1,8 @@
-# ChainView
+# BlockScope
 
 **Explore Blocks, Track Transactions, and Showcase NFTs**
 
-ChainView is a Dapp designed to streamline blockchain exploration by offering real-time block and transaction tracking, advanced search functionality for specific blocks and transactions, and a personal NFT portfolio view. Built with QuickNode integration, this app provides users with a simple and efficient way to interact with blockchain data.
+BlockScope is a Dapp designed to streamline blockchain exploration by offering real-time block and transaction tracking, advanced search functionality for specific blocks and transactions, and a personal NFT portfolio view. Built with QuickNode integration, this app provides users with a simple and efficient way to interact with blockchain data.
 
 ## Features
 
@@ -20,37 +20,37 @@ ChainView is a Dapp designed to streamline blockchain exploration by offering re
 
 1. **Clone the repository**
 
-    ```bash
-    git clone https://github.com/yourusername/chainview.git
-    cd chainview
-    ```
+   ```bash
+   git clone https://github.com/yourusername/BlockScope.git
+   cd BlockScope
+   ```
 
 2. **Install dependencies**
 
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 3. **Set up environment variables**
 
-    Create a `.env` file in the root of your project and add your credentials:
+   Create a `.env` file in the root of your project and add your credentials:
 
-    ```env
-    DATABASE_URL=postgresql://username:password@localhost:5432/dbname
-    QUICKNODE_API_KEY=your_quicknode_api_key
-    ```
+   ```env
+   DATABASE_URL=postgresql://username:password@localhost:5432/dbname
+   QUICKNODE_API_KEY=your_quicknode_api_key
+   ```
 
 4. **Run migrations**
 
-    ```bash
-    npx prisma migrate dev
-    ```
+   ```bash
+   npx prisma migrate dev
+   ```
 
 5. **Start the development server**
 
-    ```bash
-    npm run dev
-    ```
+   ```bash
+   npm run dev
+   ```
 
 ## Challenges We Encountered
 
