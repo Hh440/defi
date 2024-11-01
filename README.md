@@ -16,12 +16,15 @@ BlockScope is a Dapp designed to streamline blockchain exploration by offering r
 - **Backend**: Node.js, Prisma, PostgreSQL
 - **Blockchain Services**: QuickNode Functions, QuickNode Streams, JSON-RPC Provider by QuickNode
 
+
+## Backend Server : 
+- **Link** : [https://github.com/Hh440/webhook_defi.git](https://github.com/Hh440/webhook_defi.git)
 ## Installation
 
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/BlockScope.git
+   git clone [https://github.com/yourusername/BlockScope.git](https://github.com/aasiflm10/BlockScope.git)
    cd BlockScope
    ```
 
@@ -31,22 +34,7 @@ BlockScope is a Dapp designed to streamline blockchain exploration by offering r
    npm install
    ```
 
-3. **Set up environment variables**
-
-   Create a `.env` file in the root of your project and add your credentials:
-
-   ```env
-   DATABASE_URL=postgresql://username:password@localhost:5432/dbname
-   QUICKNODE_API_KEY=your_quicknode_api_key
-   ```
-
-4. **Run migrations**
-
-   ```bash
-   npx prisma migrate dev
-   ```
-
-5. **Start the development server**
+3. **Start the development server**
 
    ```bash
    npm run dev
@@ -73,4 +61,4 @@ BlockScope is a Dapp designed to streamline blockchain exploration by offering r
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is made for Quicknode BuildOn Hackathon.
